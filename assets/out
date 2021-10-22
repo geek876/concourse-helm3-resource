@@ -200,7 +200,7 @@ helm_upgrade() {
 
   helm_args=("${upgrade_args[@]}" "${overridden_args[@]}")
   helm_echo_args=("${upgrade_args[@]}" "${scrubbed_overridden_args[@]}")
-  helm_diff_args=("${upgrade_diff_args[@]}" "${overridden_args[@]}" "--suppress-secrets" "--include-tests" )
+  helm_diff_args=("${upgrade_diff_args[@]}" "${overridden_args[@]}" "--suppress-secrets" "--include-tests" "--detailed-exitcode")
 
   if [[ -d "$chart_full" ]]; then
     helm_depup_args=("dependency" "update" "$chart_full")
@@ -211,7 +211,8 @@ helm_upgrade() {
 
   if [ "$show_diff" = true ] ; then
     echo "Release diff:"
-    helm_echo_args=("diff" "${helm_diff_args[@]}")
+    $helm_bin diff "${helm_diff_args[@]}" | tee "$logfile"
+    exit $?
   fi
 
   echo "Running command helm ${helm_echo_args[@]} | tee $logfile"
