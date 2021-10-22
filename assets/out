@@ -112,7 +112,7 @@ helm_upgrade() {
   else
     upgrade_args=("upgrade" "$release" $chart_full "--install" "--namespace=$namespace")
   fi
-  upgrade_diff_args=("upgrade" "$release" $chart_full "--install" "--namespace=$namespace")
+  upgrade_diff_args=("upgrade" "$release" $chart_full  "--namespace=$namespace")
 
   if [ -n "$values" ]; then
     for value in $values; do
